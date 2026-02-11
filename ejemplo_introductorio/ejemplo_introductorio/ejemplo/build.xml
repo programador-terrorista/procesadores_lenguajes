@@ -4,7 +4,7 @@
 		* diretorio "src", que contenga el fuenta "proj.jj" y los directorios con las clases requeridas
 		* opcionalmente, directorio "lib" con librerías requeridas
 		* directorio "doc" con la documentación del compilador
-		Creará, en el directorio "dist" el programa "proj.jar" que contendrá tod
+		Creará, en el directorio "dist" el programa "proj.jar" que contendrá todo
 
 		* "ant clean" limpiará todo lo generado
 		* "ant" compilarará lo necesario
