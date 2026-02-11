@@ -22,7 +22,7 @@
 	<property name="project" value="cpt"/>
 	<property name="main_class" value="cpt"/>
 	<!--<property name="java_compiler" value="/usr/lib/jvm/java-8-openjdk-amd64/bin/javac"/> -->
-	<property name="java_compiler" value="javac"/>
+	<property name="java_compiler" value="/usr/bin/javac"/>
 
 	<!-- Variables -->
 	<property name="dir_traductor" value="traductor"/>
@@ -55,7 +55,7 @@
 	<target name="jcc" depends="init"> 
 	  	<!-- Generar el código fuente del traductor desde ${src_compiler} hasta ${jcc_files} -->
 	  	<javacc target="${jcc_src}/${project}.jj"
-	      	javacchome="${user.home}/aplicaciones/javacc/target"
+	      	javacchome="${user.home}/aplicaciones/javacc-javacc-7.0.13/target"
 	      	outputdirectory="${jcc_files}"
 	      	static="true"
 	  	/>
