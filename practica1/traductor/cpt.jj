@@ -1,0 +1,71 @@
+//*****************************************************************
+// File:   cpt.jj
+// Author: Procesadores de Lenguajes-University of Zaragoza
+// Date:   enero 25
+// Coms:   compilar mediante "ant"
+//*****************************************************************
+
+options {
+	IGNORE_CASE = true;
+	COMMON_TOKEN_ACTION = false;
+}
+
+PARSER_BEGIN(cpt)
+
+package traductor;
+
+//...
+
+public class cpt {
+   //...
+   
+   public static void main(String[] args) {
+	   cpt parser = null;
+	   
+	   try {
+		   if(args.length == 0) {
+			   parser = new cpt(System.in);
+		   }
+		   else {
+			   parser = new cpt(new java.io.FileInputStream(args[0]));
+		   }
+		   //Programa es el símbolo inicial de la gramática
+		   parser.Programa();
+		   //...
+		   System.out.println("***** Análisis terminado con éxito *****");
+	   }
+	   catch (java.io.FileNotFoundException e) {
+		   System.err.println ("Fichero " + args[0] + " no encontrado.");
+	   }
+	   catch (TokenMgrError e) {
+		   System.err.println("LEX_ERROR: " + e.getMessage());
+	   }
+	   catch (Exception e) {
+			// Handle the exception
+			System.err.println("An exception occurred: " + e.getMessage());
+	   }
+	}
+}
+PARSER_END(cpt)
+
+TOKEN : {
+	< #LETTER: (["a"-"z","A"-"Z"]) >
+|	< #DIGIT: ["0"-"9"] >
+}
+
+TOKEN : {
+	< tBOOL: "bool" >
+|	< tCHAR: "char" >
+}
+
+//------------ Símbolo inicial de la gramática. Para análisis léxico no hace falta más
+void Programa() : 
+{
+
+}
+{
+   ( 
+	   < tBOOL > | < tCHAR >
+   )+
+   < EOF >
+}
