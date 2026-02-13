@@ -17,7 +17,6 @@ package traductor;
 //...
 
 public class cpt {
-	public int fila = 0, columna = 0;
    //...
    
    public static void main(String[] args) {
@@ -39,6 +38,7 @@ public class cpt {
 		   System.err.println ("Fichero " + args[0] + " no encontrado.");
 	   }
 	   catch (TokenMgrError e) {
+			
 		   System.err.println("LEX_ERROR: " + e.getMessage());
 	   }
 	   catch (Exception e) {
@@ -51,20 +51,106 @@ PARSER_END(cpt)
 
 TOKEN_MGR_DECLS :
 {
-	void CommonTokenAction(Token t){
-
+	public int fila = 0, columna = 0;
+	static void CommonTokenAction(Token t){
+	
+		System.out.println("(" + t.beginColumn + "," + t.beginLine + ")" + ":" + tokenImage[t.kind] + "\"" + t.image + "\"");
 	}
 }
 
 TOKEN : {
-	< #LETTER: (["a"-"z","A"-"Z"]) >
+	< #LETTER: ["a"-"z","á","é","í","ó","ú"] >
 |	< #DIGIT: ["0"-"9"] >
 }
 
-TOKEN : {
-	< tBOOL: "bool" >
-|	< tCHAR: "char" >
+<DEFAULT> SKIP : {
+	< tCOMENTARIO: ("--"(~["\n"])*["\n"]) >
+|	" "
+|	"\t"
+|	"\n"
+|	"\r" 
 }
+
+TOKEN : {
+	< tVAR: "var" >
+|	< tCOMA: [","] >
+|	< tDOSPUNTOS: [":"]>
+|	< tARRAY: "array">
+|	< tOFOP: "of" > //tipo operador of
+|	< tSIZEOP: "size">
+|	< tWHENOP: "when">
+|	< tDOOP: "do">
+|	< tELSEWHENOP: "elsewhen">
+|	< tELSEOP: "else">
+|	< tLOOPOP: "loop"(" " | "\t")*"while">
+|	< tDONE: "done">
+|	< tNULL: "null">
+|	< tABRE_PARENTESIS: ["("]>
+|	< tCIERRA_PARENTESIS: [")"]>
+|	< tPROCESO: ("proc")>
+|	< tFUNCION: "func">
+|	< tIS: "is">
+|	< tOUT: "out">
+|	< tIN: "in">
+|	< tINOUT: "inout">
+|	< tRETURN: "return">
+|	< tREAD: "read">
+|	< tREADLN: "readln">
+|	< tPRINT: "print">
+|	< tPRINTLN: "println">
+|	< tINT_TO_CHAR: "int2char">
+|	< tCHAR_TO_INT: "char2int">
+|	< tPUNTO_COMA: [";"]>
+|	< tASIGNADOR: ["="]>
+|	< tESCALAR: ("bool" | "char" | "int")>
+|	< tLITERAL_NUMERO: (<DIGIT>)+ >
+|	< tLITERAL_CARACTER: ("'"((~["\n","\t","\r"])| "\\n" | "\\t" | "\\r")"'") >
+|	< tLITERAL_BOOLEANO: ("true" | "false")>
+|	< tTERMINAR: "EXIT"> 
+|	< tOPERADOR_ARITMETICO: ("+" | "-" | "*" | "/" | "mod")>
+|	< tOPERADOR_BOOLEANO: ("and" | "or" | "not")>
+|	< tOPERADOR_RELACIONAL: (">" | ">=" | "<" | "<=" | "==" | "<>") >
+|	< tIDENT: < LETTER >(< LETTER >|< DIGIT >|"_")*> // debe ir último, cambiar a upper en semántico o sintáctico
+
+}
+
+MORE : {
+	<tABRE_COMILLA: "\"" > : ENTRE_COMILLAS
+|	<noReconocido: ~[]> :ERROR
+}
+
+< ENTRE_COMILLAS > MORE:{
+	<tTEXTO_STRING: ~["\""]>
+|	<tDOBLE_COMILLA: "\"\"">{
+		image.delete(image.length()-1,image.length());
+	}
+} 
+< ENTRE_COMILLAS > TOKEN : {
+	<tSTRING:["\""]>{
+		image.delete(0, 1);
+		image.delete(image.length()-1,image.length());
+		matchedToken.image = image.toString();
+	}:DEFAULT
+}
+
+
+
+< ERROR > SPECIAL_TOKEN : {
+	<"--">{
+		System.out.println("ERROR LÉXICO: (" + SimpleCharStream.getBeginColumn() + "," + SimpleCharStream.getBeginLine() + ")" + ": " + "símbolo no reconocido" + ": " + "\"" + image + "\"");
+	} :DEFAULT
+|	<[" ","\t","\n","\r" ]> {
+		System.out.println("ERROR LÉXICO: (" + SimpleCharStream.getBeginColumn() + "," + SimpleCharStream.getBeginLine() + ")" + ": " + "símbolo no reconocido" + ": " + "\"" + image + "\"");
+	} :DEFAULT
+
+}
+
+
+<ERROR> MORE : {
+	<~[]> :ERROR
+}
+
+
 
 //------------ Símbolo inicial de la gramática. Para análisis léxico no hace falta más
 void Programa() : 
@@ -73,7 +159,46 @@ void Programa() :
 }
 {
    ( 
-	   < tBOOL > | < tCHAR >
+		< tVAR >
+		| 	<tDOSPUNTOS>
+		|	<tCOMA>
+		|	< tARRAY >
+		|	< tOFOP >
+		|	< tSIZEOP >
+		|	< tWHENOP >
+		|	< tDOOP >
+		|	< tELSEWHENOP >
+		|	< tELSEOP >
+		|	< tLOOPOP >
+		|	< tDONE >
+		|	< tNULL >
+		|	< tABRE_PARENTESIS >
+		|	< tCIERRA_PARENTESIS >
+		|	< tPROCESO >
+		|	< tFUNCION >
+		|	< tIS >
+		|	< tOUT >
+		|	< tIN >
+		|	< tINOUT >
+		|	< tRETURN >
+		|	< tREAD >
+		|	< tREADLN >
+		|	< tPRINT >
+		|	< tPRINTLN >
+		|	< tINT_TO_CHAR >
+		|	< tCHAR_TO_INT >
+		|	< tPUNTO_COMA >
+		|	< tASIGNADOR >
+		|	< tESCALAR >
+		|	< tLITERAL_NUMERO >
+		|	< tLITERAL_CARACTER >
+		|	< tLITERAL_BOOLEANO >
+		|	< tIDENT >
+		|	< tTERMINAR >
+		|	< tOPERADOR_ARITMETICO >
+		|	< tOPERADOR_BOOLEANO >
+		|	< tOPERADOR_RELACIONAL >
+		|	< tSTRING >
    )+
    < EOF >
 }
