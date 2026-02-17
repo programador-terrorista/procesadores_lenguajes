@@ -1,0 +1,77 @@
+
+PARSER_BEGIN(calc)
+package traductor;
+
+public class calc {
+    public static void main(String[] args) {
+        try {
+            calc calculator = new calc(System.in);
+            calculator.S();
+        } catch (Throwable e) {
+            System.out.println("Syntax check failed: " 
+                               + e.getMessage());
+        }
+    }
+}
+PARSER_END(calc)
+//-------------------------------------------------
+SKIP:  { " " | "\t" | "\n" | "\r" }
+TOKEN: { < NUM: (["0"-"9"])+ > }
+//-------------------------------------------------
+//........... S: (E ";") +
+void S():
+{
+    int val;
+}
+{
+    (
+        val =  E() ";" 
+            {
+                System.out.println("-> " + val);
+            }
+    )+
+}
+//........... E: T ("+" T)*
+int E():
+{
+    int val;
+    int val2;
+}
+{   
+    val = T()
+
+    ( 
+        "+" val2 = T()
+        {
+            val += val2;
+        } 
+    )*   
+    {
+        return val;
+    }   
+}
+//........... T: F ("*" F)*
+int T():
+{
+    int val1, val2;
+}
+{
+    val1 = F() 
+    (
+         "*" val2 = F() {
+            val1 *= val2;
+         }
+    )*
+    {
+        return val1;
+    }
+}
+//........... F: <NUM> | ( E )
+void F():
+{
+    Token t;
+}
+{
+   t = <NUM> 
+| "(" E() ")"
+}
