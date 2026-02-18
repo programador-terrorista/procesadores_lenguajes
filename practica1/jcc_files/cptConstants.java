@@ -47,63 +47,73 @@ public interface cptConstants {
   /** RegularExpression Id. */
   int tCIERRA_PARENTESIS = 22;
   /** RegularExpression Id. */
-  int tPROCESO = 23;
+  int tABRE_CORCHETE = 23;
   /** RegularExpression Id. */
-  int tFUNCION = 24;
+  int tCIERRA_CORCHETE = 24;
   /** RegularExpression Id. */
-  int tIS = 25;
+  int tPROCEDIMIENTO = 25;
   /** RegularExpression Id. */
-  int tOUT = 26;
+  int tFUNCION = 26;
   /** RegularExpression Id. */
-  int tIN = 27;
+  int tIS = 27;
   /** RegularExpression Id. */
-  int tINOUT = 28;
+  int tOUT = 28;
   /** RegularExpression Id. */
-  int tRETURN = 29;
+  int tIN = 29;
   /** RegularExpression Id. */
-  int tREAD = 30;
+  int tINOUT = 30;
   /** RegularExpression Id. */
-  int tREADLN = 31;
+  int tRETURN = 31;
   /** RegularExpression Id. */
-  int tPRINT = 32;
+  int tREAD = 32;
   /** RegularExpression Id. */
-  int tPRINTLN = 33;
+  int tREADLN = 33;
   /** RegularExpression Id. */
-  int tINT_TO_CHAR = 34;
+  int tPRINT = 34;
   /** RegularExpression Id. */
-  int tCHAR_TO_INT = 35;
+  int tPRINTLN = 35;
   /** RegularExpression Id. */
-  int tPUNTO_COMA = 36;
+  int tINT_TO_CHAR = 36;
   /** RegularExpression Id. */
-  int tASIGNADOR = 37;
+  int tCHAR_TO_INT = 37;
   /** RegularExpression Id. */
-  int tESCALAR = 38;
+  int tPUNTO_COMA = 38;
   /** RegularExpression Id. */
-  int tLITERAL_NUMERO = 39;
+  int tASIGNADOR = 39;
   /** RegularExpression Id. */
-  int tLITERAL_CARACTER = 40;
+  int tESCALAR = 40;
   /** RegularExpression Id. */
-  int tLITERAL_BOOLEANO = 41;
+  int tLITERAL_NUMERO = 41;
   /** RegularExpression Id. */
-  int tTERMINAR = 42;
+  int tLITERAL_CARACTER = 42;
   /** RegularExpression Id. */
-  int tOPERADOR_ARITMETICO = 43;
+  int tLITERAL_BOOLEANO = 43;
   /** RegularExpression Id. */
-  int tOPERADOR_BOOLEANO = 44;
+  int tTERMINAR = 44;
   /** RegularExpression Id. */
-  int tOPERADOR_RELACIONAL = 45;
+  int tOPERADOR_ARITMETICO_SUMATIVO = 45;
   /** RegularExpression Id. */
-  int tIDENT = 46;
+  int tOPERADOR_MULTIPLICATIVO = 46;
   /** RegularExpression Id. */
-  int tABRE_COMILLA = 47;
+  int tOPERADOR_BOOLEANO = 47;
   /** RegularExpression Id. */
-  int noReconocido = 48;
+  int tNOT = 48;
   /** RegularExpression Id. */
-  int tTEXTO_STRING = 49;
+  int tOPERADOR_RELACIONAL = 49;
   /** RegularExpression Id. */
-  int tDOBLE_COMILLA = 50;
+  int tFLECHA = 50;
   /** RegularExpression Id. */
-  int tSTRING = 51;
+  int tIDENT = 51;
+  /** RegularExpression Id. */
+  int tABRE_COMILLA = 52;
+  /** RegularExpression Id. */
+  int noReconocido = 53;
+  /** RegularExpression Id. */
+  int tTEXTO_STRING = 54;
+  /** RegularExpression Id. */
+  int tDOBLE_COMILLA = 55;
+  /** RegularExpression Id. */
+  int tLITERAL_STRING = 56;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -137,6 +147,8 @@ public interface cptConstants {
     "\"null\"",
     "<tABRE_PARENTESIS>",
     "<tCIERRA_PARENTESIS>",
+    "<tABRE_CORCHETE>",
+    "<tCIERRA_CORCHETE>",
     "\"proc\"",
     "\"func\"",
     "\"is\"",
@@ -157,18 +169,21 @@ public interface cptConstants {
     "<tLITERAL_CARACTER>",
     "<tLITERAL_BOOLEANO>",
     "\"EXIT\"",
-    "<tOPERADOR_ARITMETICO>",
+    "<tOPERADOR_ARITMETICO_SUMATIVO>",
+    "<tOPERADOR_MULTIPLICATIVO>",
     "<tOPERADOR_BOOLEANO>",
+    "\"not\"",
     "<tOPERADOR_RELACIONAL>",
+    "\"->\"",
     "<tIDENT>",
     "\"\\\"\"",
     "<noReconocido>",
     "<tTEXTO_STRING>",
     "\"\\\"\\\"\"",
-    "<tSTRING>",
+    "<tLITERAL_STRING>",
     "\"--\"",
-    "<token of kind 53>",
-    "<token of kind 54>",
+    "<token of kind 58>",
+    "<token of kind 59>",
   };
 
 }
