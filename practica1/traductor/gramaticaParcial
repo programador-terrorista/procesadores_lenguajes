@@ -1,0 +1,58 @@
+Program: 
+	< tPROCEDURE >
+	< tID >
+	< tIS >
+	program_body
+	< tDONE >
+
+program_body:
+	( variable_declaration )*
+	( procedure_declaration | function_declaration )*
+	instruction_block
+
+...
+
+instruccion() :
+    inst_read
+|	inst_print
+|   inst_ass
+|   inst_if
+....
+
+
+expresion:
+    relacion ( (< tAND > | < tOR > ) relacion )* //devuelve bool si hay lo del paréntesis
+
+relacion:
+    expresion_simple ( operador_relacional expresion_simple )? //devuelve bool si hay lo del paréntesis
+
+operador_relacional:
+    <tIG> |	<tMEN> | <tMAY> | <tMENI> |	<tMAYI> | <tDIF>
+
+expresion_simple: 
+    termino ( ( <tMAS> | tMENOS> ) termino )* // devuelve numero
+
+termino:
+    factor ( operador_multiplicativo factor )* // devuelve numero
+
+operador_multiplicativo:
+    <tPROD> | <tMOD> | <tDIV>
+
+factor:
+    ( <tNOT> | <tMAS> | <tMENOS> )? ( <tAPAR> expresion <tCPAR> | primario )
+
+primario:
+	<tINT2CHAR> <tAPAR> expresion <tCPAR>
+|	<tCHAR2INT> <tAPAR> expresion <tCPAR>
+|	LOOKAHEAD(2)
+    <tID> <tAPAR> lista_una_o_mas_exps <tCPAR> //invoc a func.
+|	LOOKAHEAD(2)
+    <tID> <tACOR> expresion <tCCOR>	 //comp. array
+|	<tID>
+|	<tCONST_INT>
+|	<tCONST_CHAR>
+|	<tCONST_STRING>
+|	<tTRUE>
+...
+
+
