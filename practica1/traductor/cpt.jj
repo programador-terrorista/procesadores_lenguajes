@@ -18,16 +18,19 @@ package traductor;
 
 public class cpt {
    //...
-   
+   static public boolean verbose = false;
    public static void main(String[] args) {
+	   
 	   cpt parser = null;
 	   
 	   try {
 		   if(args.length == 0) {
 			   parser = new cpt(System.in);
-		   }
-		   else {
-			   parser = new cpt(new java.io.FileInputStream(args[0]));
+		   }else {
+				if (args.length == 2){
+					verbose = true;
+				}
+			   	parser = new cpt(new java.io.FileInputStream(args[0]));
 		   }
 		   //Programa es el símbolo inicial de la gramática
 		   parser.Programa();
@@ -51,10 +54,10 @@ PARSER_END(cpt)
 
 TOKEN_MGR_DECLS :
 {
-	public int fila = 0, columna = 0;
 	static void CommonTokenAction(Token t){
-	
-		//System.out.println("(" + t.beginColumn + "," + t.beginLine + ")" + ":" + tokenImage[t.kind] + "\"" + t.image + "\"");
+		if(cpt.verbose){
+			System.out.println("(" + t.beginColumn + "," + t.beginLine + ")" + ":" + tokenImage[t.kind] + "\"" + t.image + "\"");
+		}
 	}
 }
 
@@ -204,12 +207,14 @@ void DeclaraFunc() :
 void Parametros() :
 {}
 {
-	<tABRE_PARENTESIS>
-	( 
-	(<tIN>|<tOUT>|<tINOUT>) ListIdent() <tDOSPUNTOS> ( ArrayCabecera()|<tESCALAR>)
-	(<tCOMA> (<tIN>|<tOUT>|<tINOUT>) ListIdent() <tDOSPUNTOS> ( ArrayCabecera()|<tESCALAR>))* 
+	(
+		<tABRE_PARENTESIS>
+		( 
+			(<tIN>|<tOUT>|<tINOUT>) ListIdent() <tDOSPUNTOS> ( ArrayCabecera()|<tESCALAR>)
+			(<tCOMA> (<tIN>|<tOUT>|<tINOUT>) ListIdent() <tDOSPUNTOS> ( ArrayCabecera()|<tESCALAR>))* 
+		)?
+		<tCIERRA_PARENTESIS>
 	)?
-	<tCIERRA_PARENTESIS>
 }
 
 void ArrayCabecera() : 
@@ -267,11 +272,12 @@ void Instruccion() :
 {
 	Loop() 
 |	When()
-|	<tTERMINAR>
+|	<tTERMINAR> <tPUNTO_COMA>
 |	LOOKAHEAD(2)
 	Asignacion() <tPUNTO_COMA>
 |	Call() <tPUNTO_COMA>
 |	Return() <tPUNTO_COMA>
+| 	<tNULL> <tPUNTO_COMA>
 }
 
 void Asignacion() :
@@ -286,9 +292,7 @@ void Loop() :
 {}
 {
 	<tLOOPOP>
-	<tABRE_PARENTESIS>
 	Expresion()
-	<tCIERRA_PARENTESIS>
 	<tDOOP>
 	BloqueInstrucciones()
 	<tDONE>
@@ -299,16 +303,12 @@ void When() :
 {}
 {
 	<tWHENOP>
-	<tABRE_PARENTESIS>
 	Expresion()
-	<tCIERRA_PARENTESIS>
 	<tDOOP>
 	BloqueInstrucciones()
 	
 	(<tELSEWHENOP>
-	<tABRE_PARENTESIS>
 	Expresion()
-	<tCIERRA_PARENTESIS>
 	<tDOOP>
 	BloqueInstrucciones() )*
 	

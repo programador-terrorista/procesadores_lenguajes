@@ -1,33 +1,101 @@
--- mergesort
+-- mergesort recursivo
+-- fuente: pseudocódigo de https://en.wikipedia.org/wiki/Merge_sort
+-- Ha sido modificado para adaptarlo al lenguaje.
 proc main is
-----------------------------------
-    proc mergesort(inout vector : array of int size 100) is
-    ------------------------------
-        proc merge(in vectorLeft, vectorRight : array of int size 100, out res : array of int size 100) is
-            
-            func first(in vector: array of int size 100) -> int 
-                return vector[0];
-            done
+------------------------------------------------------------------------
+    var array sinOrdenar, ordenado of int size 20;
+    var numElementos: int;
+------------------------------------------------------------------------
+    proc mergesort(in vectorIn : array of int size 20, in n : int, out vectorOut : array of int size 20) is
+------------------------------------------------------------------------
+        var array vectorLeft, vectorLeftAux, vectorRight, vectorRightAux of int size 20;
+        var i: int;
+        ---------------------------------------------------------------------
+        proc merge(in vectorLeft, vectorRight : array of int size 20, 
+                in leftN, rightN: int, 
+                out res : array of int size 20) is
+            var leftI,rightI,outI : int;
 
-            loop while ( (length(vectorLeft) > 0) and (lengt(vectorRight)>0)) do 
-                when(first(vectorLeft)>=first(vectorRight)) do
-                    append(first(vectorLeft), res);
-                    vectorLeft = rest(vectorLeft);
-                else 
-                    append(first(vectorRight), res);
-                    vectorRight = rest(vectorRight);
+            ----------------------------------------------------------------
+            proc append(in vectorAdherido: array of int size 20, in inicio, nAdherido: int,
+             inout vSalida: array of int size 20, inout nSalida: int) is
+                var i: int;
+                i = 0;
+                loop while i < nAdherido do
+                    vSalida[nSalida] = vectorAdherido[i+inicio];
+                    i = i + 1;
+                    nSalida = nSalida + 1;
                 done
             done
-            
-            when (length(vectorLeft) > 0) do
-                append(vectorLeft, res);
+            ----------------------------------------------------------------
+            leftI = 0;
+            rightI = 0;
+            outI = 0;
+        
+            loop while (( leftI < leftN) and (rightI < rightN)) do 
+                when(vectorLeft[leftI] <= vectorRight[rightI]) do
+                    res[outI] = vectorLeft[leftI];
+                    leftI = leftI + 1;
+                    
+                else 
+                    res[outI] = vectorRight[rightI];
+                    rightI = rightI + 1;
+                done
             done
-            when(length(vectorRight)> 0) done
-                append(vectorRight, res);
+
+            when ( leftI < leftN ) do
+                append(vectorLeft, leftI, leftN-leftI, res, outI);
+            done
+            when(rightI < rightN) do
+                append(vectorRight, rightI, rightN-rightI, res, outI);
             done
         done
+        ---------------------------------------------------------------------
+        when n == 1 do
+            vectorOut[0] = vectorIn[0];
+        else
+            i = 0;
+            loop while i < n do
+                when i < n/2 do
+                    vectorLeft[i] = vectorIn[i];
+                else
+                    vectorRight[i - n/2] = vectorIn[i];
+                done
+                i = i + 1;
+            done
+            mergesort(vectorLeft,n/2,vectorLeftAux);
+            mergesort(vectorRight, n - n/2, vectorRightAux);
 
-        
+            merge(vectorLeftAux,vectorRightAux,n/2, n - n/2, vectorOut);
+
+        done
+
+    done
+------------------------------------------------------------------------    
+    numElementos = 1;
+    loop while numElementos < 20 do
+        sinOrdenar[numElementos] = (numElementos) mod 50 + 1;
+        numElementos = numElementos + 1;
+    done
+    
+    mergesort(sinOrdenar,20,ordenado);
+
+    numElementos = 0;
+    
+    loop while numElementos < 20 do 
+
+        println(sinOrdenar[numElementos]);
+        numElementos = numElementos + 1;
+    done
+
+    println("-------------------------");
+
+    numElementos = 0;
+    
+    loop while numElementos < 20 do 
+
+        println(ordenado[numElementos]);
+        numElementos = numElementos + 1;
     done
 
 done

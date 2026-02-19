@@ -1,7 +1,46 @@
--- mergesort con errores
+-- Test para probar cada una de las estructuras sintácticas y tipos de token al menos una vez.
 proc main is
------------------------------------------------------
-漢字
-    var is : char
-    var ,i: int;
+    var  a: int; var b, cd_1234_cd: char;
+    var h,i,j : bool;
+    var array k,l of int size 10;
+    proc miProc is
+        
+        func miFunc -> bool is
+            return false;
+        done
+        println(miFunc);
+    done
+    proc miProc2(in a: array of bool size 200, out b: char, inout c: int) is
     
+        func miFunc(in a: char, in b: bool) -> bool is
+            when b do
+                println(cd_1234_cd);
+                println(a);
+            done
+            return b;
+        done
+
+        a[c] = miFunc(a[c+1],b);
+
+    done
+
+    a = 3;
+    k[0] = 4;
+    loop while ((a < 5) and ((k[0] <> 0) or (0 <= k[0]))) do 
+        a = ((a + 3 * 2) mod 50) / (5 - k[0]); 
+    done
+    
+    when a >= 5 and false do 
+        null;
+    elsewhen( true and not a > 12) do
+        read(a,i,j);
+        int2char(a);
+        char2int(a);
+    else 
+        readln(h,i);
+    done
+    
+    print("Se hace exit");
+    exit;
+    println("El exit no ha funcionado");
+done 
