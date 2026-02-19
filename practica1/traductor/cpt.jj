@@ -54,7 +54,7 @@ TOKEN_MGR_DECLS :
 	public int fila = 0, columna = 0;
 	static void CommonTokenAction(Token t){
 	
-		System.out.println("(" + t.beginColumn + "," + t.beginLine + ")" + ":" + tokenImage[t.kind] + "\"" + t.image + "\"");
+		//System.out.println("(" + t.beginColumn + "," + t.beginLine + ")" + ":" + tokenImage[t.kind] + "\"" + t.image + "\"");
 	}
 }
 
@@ -187,6 +187,7 @@ void DeclaraProc() :
 	Cuerpo()
 	<tDONE>
 }
+
 void DeclaraFunc() :
 {}
 { 
@@ -205,10 +206,20 @@ void Parametros() :
 {
 	<tABRE_PARENTESIS>
 	( 
-	(<tIN>|<tOUT>|<tINOUT>) (ListArray()|ListEscalar())
-	(<tCOMA>(<tIN>|<tOUT>|<tINOUT>) (ListArray()|ListEscalar()))* 
+	(<tIN>|<tOUT>|<tINOUT>) ListIdent() <tDOSPUNTOS> ( ArrayCabecera()|<tESCALAR>)
+	(<tCOMA> (<tIN>|<tOUT>|<tINOUT>) ListIdent() <tDOSPUNTOS> ( ArrayCabecera()|<tESCALAR>))* 
 	)?
 	<tCIERRA_PARENTESIS>
+}
+
+void ArrayCabecera() : 
+{}
+{
+	<tARRAY>
+	<tOFOP>
+	<tESCALAR>
+	<tSIZEOP>
+	<tLITERAL_NUMERO>
 }
 
 void DeclaraVar() : 
@@ -266,7 +277,7 @@ void Instruccion() :
 void Asignacion() :
 {}
 {
-	<tIDENT> 
+	(<tIDENT> ( <tABRE_CORCHETE> Expresion() <tCIERRA_CORCHETE> )? )	 //comp. array
 	<tASIGNADOR>
 	Expresion()
 }
@@ -302,10 +313,6 @@ void When() :
 	BloqueInstrucciones() )*
 	
 	(<tELSEOP>
-	<tABRE_PARENTESIS>
-	Expresion()
-	<tCIERRA_PARENTESIS>
-	<tDOOP> 
 	BloqueInstrucciones() )?
 	
 	<tDONE>
@@ -318,7 +325,7 @@ void Call() :
 	(<tIDENT>|<tINT_TO_CHAR>|<tCHAR_TO_INT>|<tPRINT>|<tPRINTLN>|<tREAD>|<tREADLN>)
 	<tABRE_PARENTESIS>
 	(LOOKAHEAD(2) Expresion() (<tCOMA> Expresion())*)?
-	<tABRE_PARENTESIS>
+	<tCIERRA_PARENTESIS>
 }
 
 void Return() :

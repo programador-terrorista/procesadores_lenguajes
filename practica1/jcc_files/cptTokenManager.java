@@ -7,7 +7,7 @@ public class cptTokenManager implements cptConstants
         public int fila = 0, columna = 0;
         static void CommonTokenAction(Token t){
 
-                System.out.println("(" + t.beginColumn + "," + t.beginLine + ")" + ":" + tokenImage[t.kind] + "\"" + t.image + "\"");
+                //System.out.println("(" + t.beginColumn + "," + t.beginLine + ")" + ":" + tokenImage[t.kind] + "\"" + t.image + "\"");
         }
 
   /** Debug output. */

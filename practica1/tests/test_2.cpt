@@ -1,0 +1,7 @@
+-- mergesort con errores
+proc main is
+-----------------------------------------------------
+漢字
+    var is : char
+    var ,i: int;
+    

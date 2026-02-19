@@ -1,0 +1,33 @@
+-- mergesort
+proc main is
+----------------------------------
+    proc mergesort(inout vector : array of int size 100) is
+    ------------------------------
+        proc merge(in vectorLeft, vectorRight : array of int size 100, out res : array of int size 100) is
+            
+            func first(in vector: array of int size 100) -> int 
+                return vector[0];
+            done
+
+            loop while ( (length(vectorLeft) > 0) and (lengt(vectorRight)>0)) do 
+                when(first(vectorLeft)>=first(vectorRight)) do
+                    append(first(vectorLeft), res);
+                    vectorLeft = rest(vectorLeft);
+                else 
+                    append(first(vectorRight), res);
+                    vectorRight = rest(vectorRight);
+                done
+            done
+            
+            when (length(vectorLeft) > 0) do
+                append(vectorLeft, res);
+            done
+            when(length(vectorRight)> 0) done
+                append(vectorRight, res);
+            done
+        done
+
+        
+    done
+
+done
